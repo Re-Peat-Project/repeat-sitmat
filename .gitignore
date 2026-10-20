@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+
+# Local tool and OS files
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated data and reports
+# sitmat_out/
+# baseline_out/
+
+# Large geospatial inputs and generated web layers
+# assets/batas-khg-indonesia.geojson
+# assets/geo/src/
+# assets/geo/*.geojson
