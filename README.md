@@ -11,9 +11,10 @@ The endpoints are undocumented and may change. Keep the request rate polite.
 sitmat_tmat_extract.py   downloader + post-processor
 update.py                one-command update to today (download, process, geo)
 check_output.py          quick pandas sanity checks on daily_long.csv
+sitmat_baseline.py       cleaned, station-selected baseline (writes baseline_out/)
 prepare_geo.py           spatial join + web-sized boundary layers (needs geopandas)
 index.html               dashboard (reads sitmat_out/processed/*.csv)
-assets/app.js, js/*.js   dashboard code (data, theme, overview, insights, map, regions, tables)
+assets/app.js, js/*.js   dashboard code (data, theme, overview, insights, map, regions, tables, datatab)
 assets/style.css         styles
 assets/geo/              khg/adm1/adm2 .geojson for the web (generated); src/ = geoBoundaries inputs
 assets/batas-khg-indonesia.geojson   KHG polygons (88 MB source, not read by the browser)
@@ -21,6 +22,7 @@ sitmat_out/
   raw/                   gzip'd JSON as downloaded (resumable)
   processed/             CSVs used by the dashboard
   download.log
+baseline_out/            output of sitmat_baseline.py
 ```
 
 ## Data sources
@@ -39,6 +41,7 @@ so only the `detail` block is used for the requested day.
 ```bash
 python update.py            # download what is new, rebuild the CSVs, assign regions to new stations
 python update.py --check    # how far behind is the data (no requests)
+python update.py --no-geo   # skip the spatial join even if new stations appeared
 ```
 
 It fetches every missing concession day plus the last two (they may have been partial), refreshes the community stations (their history is merged with what is on disk, since the API only reaches back 90 days), rebuilds `sitmat_out/processed/`, and runs `prepare_geo.py` when new stations have no KHG or province yet (needs geopandas; otherwise it prints the command). A full community refresh is about 125 requests, so allow a few minutes. If it stops on a rate limit, run it again. Extra options go to the extractor, e.g. `python update.py --delay 2.5`. Then reload the dashboard.
@@ -74,6 +77,19 @@ and `--spike-cm` (default 60) sets the `spike` flag.
 
 Flagged values are kept in the CSVs, not removed.
 
+Current data (`qc_report.txt`): 2026-04-01 to 2026-10-22, 124 community and 1159 concession stations. `python update.py --check` gives the latest day on disk.
+
+**Used by the pipeline.** `repeat_common.tma` reads `daily_long.csv`, `stations.csv` and `stations_geo.csv` (`has_loc`) from the folder named by `tma.path`: concession stations only and `range`/`spike` readings dropped by default. The chain's `local_inputs` step clips these three files to each KHG in `_khg/<code>_<name>/00_inputs/sitmat/` and points `tma.path` there; without the clip it uses `${SITMAT_PROCESSED}` (= `repeat-sitmat/sitmat_out/processed`).
+
+## Baseline (`sitmat_baseline.py`)
+
+```bash
+python sitmat_baseline.py                                   # --in sitmat_out/processed --out baseline_out --start 2026-04-01
+python sitmat_baseline.py --end 2026-10-13 --drop-spikes --min-coverage-concession 0.8
+```
+
+Drops rows without a level and `range` outliers (`--drop-spikes` also spikes), keeps stations with enough valid days and coverage (`--min-days-community` 30, `--min-days-concession` 60, `--min-coverage-community` 0.5, `--min-coverage-concession` 0.8), and writes `baseline_daily.csv`, `station_summary.csv`, `station_monthly.csv`, `monthly_overview.csv`, `dropped_stations.csv` and `baseline_report.txt`. Level classes follow the SiTMAT legend: Tergenang > 0, Normal −40 to 0, Rawan −80 to −40, Sangat Rawan ≤ −80 cm. The `baseline_out/` on disk was made for 2026-04-01 to 2026-10-14.
+
 ## Spatial layers (`prepare_geo.py`)
 
 The dashboard assigns every station to a KHG, regency and province from its coordinates. The portal's
@@ -98,7 +114,7 @@ The page loads the CSVs and boundaries with `fetch`, so serve the folder over HT
 
 ```bash
 python -m http.server 8000
-# open http://localhost:8000/   (append #patterns, #map, #compare, #heat, #table or #qc to open a tab)
+# open http://localhost:8000/   (append #patterns, #map, #compare, #heat, #table, #data or #qc to open a tab)
 ```
 
 Opening `index.html` from disk (`file://`) blocks the fetch. The page then offers file pickers for
@@ -151,5 +167,5 @@ checked with the dataviz palette validator in light and dark mode.
 - **Short record.** About six months covers one dry-season drawdown and the start of the wet season. Trends cannot be separated from seasonality, so read them as drawdown and recession rate.
 - **Station dropout.** Concession points reporting per day fall from about 740 in April to about 400 in October, with some near-empty days. The dashboard compares stations with themselves for this reason.
 - **No rain or soil moisture.** `rain_fall_mm` and `soil_moisture_pct` are 0 in every concession row (not returned by the portal), and `water_level_min/max_cm` equal `water_level_cm`. The dashboard ignores them. A water balance (neraca air) needs external rainfall, e.g. CHIRPS or GPM IMERG joined by KHG.
-- Community stations: mean coverage about 12%, most carry a `range` or `spike` flag, and their status classes do not follow the −40/−80 cm breaks.
+- Community stations: mean coverage 27% (measured over the 91 days from 2026-07-24, `qc_report.txt`), 32 of the 74 with readings carry a `range` or `spike` flag, and their status classes do not follow the −40/−80 cm breaks.
 - Some stations have bad coordinates (see Data quality); station IDs for concession points may not be stable across days (`check_output.py`).
