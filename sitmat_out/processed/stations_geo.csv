@@ -504,6 +504,7 @@ concession,197_CUS:CA4,1,112,0.0,Kalimantan Barat,Sungai Matan -Sungai Semandang
 concession,198_KIU:L28,1,119,0.0,Kalimantan Tengah,Sungai Mentaya - Sungai Tualan,Kotawaringin Timur,273
 concession,198_KIU:N7,1,119,0.0,Kalimantan Tengah,Sungai Mentaya - Sungai Tualan,Kotawaringin Timur,273
 concession,198_KIU:O16,1,119,0.0,Kalimantan Tengah,Sungai Mentaya - Sungai Tualan,Kotawaringin Timur,273
+concession,198_KIU:l28,1,119,0.0,Kalimantan Tengah,Sungai Mentaya - Sungai Tualan,Kotawaringin Timur,273
 concession,199_GAL:TP-J44,1,79,0.0,Kalimantan Tengah,Sungai Kapuas - Sungai Barito,Kapuas,137
 concession,199_GAL:TP-L56,1,79,0.0,Kalimantan Tengah,Sungai Kapuas - Sungai Barito,Kapuas,137
 concession,199_GAL:TP-M68,1,79,0.0,Kalimantan Tengah,Sungai Kapuas - Sungai Barito,Kapuas,137
@@ -639,6 +640,7 @@ concession,23_WSL:WSL_D119_P3,1,173,0.0,Kalimantan Barat,Sungai Terentang - Sung
 concession,23_WSL:WSL_E001_P2,1,173,0.0,Kalimantan Barat,Sungai Terentang - Sungai Kapuas,Kubu Raya,275
 concession,23_WSL:WSL_E011_P3,1,173,0.0,Kalimantan Barat,Sungai Terentang - Sungai Kapuas,Kubu Raya,275
 concession,23_WSL:WSL_E071_P3,1,173,0.0,Kalimantan Barat,Sungai Terentang - Sungai Kapuas,Kubu Raya,275
+concession,23_WSL:WSL_c076_P3,1,173,0.0,Kalimantan Barat,Sungai Terentang - Sungai Kapuas,Kubu Raya,275
 concession,240_PTPNVAMO:TP-6,1,63,0.0,Riau,Sungai Indragiri - Sungai Belilas,Indragiri Hulu,125
 concession,244_SIS:01,1,99,0.0,Sumatera Utara,Sungai Kuo - Sungai Kualuh Bilah,Labuhan Batu,283
 concession,245_SR:II0119,1,104,0.0,Kalimantan Tengah,Sungai Lamandau - Sungai Jelai,Sukamara,463
@@ -1217,6 +1219,7 @@ concession,66_SIP:F43,1,145,0.0,Riau,Sungai Rokan - Sungai Kubu,Rokan Hilir,424
 concession,66_SIP:TP.2,1,145,0.0,Riau,Sungai Rokan - Sungai Kubu,Rokan Hilir,424
 concession,67_GMR:F53,1,145,0.0,Riau,Sungai Rokan - Sungai Kubu,Rokan Hilir,424
 concession,67_GMR:L42,1,145,0.0,Riau,Sungai Rokan - Sungai Kubu,Rokan Hilir,424
+concession,67_GMR:l42,1,145,0.0,Riau,Sungai Rokan - Sungai Kubu,Rokan Hilir,424
 concession,69_SKD:85,1,140,0.0,Kalimantan Tengah,Sungai Pukun - Sungai Mentaya,Kotawaringin Timur,273
 concession,69_SKD:L26,1,140,0.0,Kalimantan Tengah,Sungai Pukun - Sungai Mentaya,Kotawaringin Timur,273
 concession,70_SLM:C006,1,161,0.0,Kalimantan Tengah,Sungai Seruyan - Sungai Kelua Besar,Seruyan,441

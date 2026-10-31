@@ -36,6 +36,20 @@ Concession snapshots return a different set of points each day, so the union is 
 Each point's `history` block always covers the last 30 days and ignores the requested date,
 so only the `detail` block is used for the requested day.
 
+### How far back the portal goes (tested 2026-10-14, again 2026-10-29)
+
+Nothing before 2026-04-01 can be fetched, so the local archive is the only longer record. Keep `update.py` running: community history older than 90 days is lost on the server side.
+
+| Request | Result |
+|---|---|
+| `/api/konsensi?tanggal=` 2026-03-31, 2026-01-15, 2025-09-15, 2019-03-01 | HTTP 502, `"error": "Failed to load konsensi data"`, no features |
+| `/api/tmat/ringkasan?from=&to=` per month | 0 stations up to March 2026 (also all of 2019 and June to September 2025); 742 stations for 1-3 April 2026, 843 for April |
+| `/api/air-gambut/masyarakat/station-detail?days=` 90, 91, 180, 365, 2000 | identical response: `history_days` 90, daily history from 90 days back; the `detail` block holds about 60 days of hourly readings |
+| `station-detail` with `from`/`to`, `start_date`/`end_date` or `tanggal` | ignored: same response as without them |
+| `/api/konsesi/detail?id=` with `tanggal` | ignored: always the latest snapshot |
+
+Two other endpoints were checked on 2026-10-29. `/api/sekatkanal` serves 8,512 canal blocks (KSE codes, 2017-2024, budget, contractor). 8,458 of its 8,459 codes are already in `_data/infrastruktur_hidrologis_existing_BRGM_Indonesia.gpkg`. `/api/simatag/list-perusahaan` lists the companies with their licence type and TMAT and rain station counts.
+
 ## Update to today
 
 ```bash

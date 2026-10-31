@@ -63,7 +63,7 @@ import requests
 BASE = "https://sitmat.kemenlh.go.id"
 HEADERS = {"User-Agent": "tmat-research-script/2.0", "Accept": "application/json"}
 
-# Limits found by testing the live site on 2026-10-14 (they may change):
+# Limits found by testing the live site on 2026-10-14 and confirmed on 2026-10-29 (README, "How far back"):
 COMMUNITY_MAX_DAYS = 90                  # station-detail clamps `days` to 90
 CONCESSION_EARLIEST = date(2026, 4, 1)   # first date /api/konsensi returns data for
 
